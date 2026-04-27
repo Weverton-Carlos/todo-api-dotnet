@@ -62,10 +62,7 @@ Cada tarefa possui:
 
 * Testes unitários na camada de serviço
 * Uso de **Moq** para isolamento de dependências
-<<<<<<< HEAD
-=======
 * Uso de **FluentValidation** para validação desacoplada
->>>>>>> develop
 * Validação de:
 
   * Regras de negócio
@@ -79,10 +76,7 @@ Cada tarefa possui:
 * Aplicação containerizada com **Docker**
 * Banco SQL Server em container
 * Execução simplificada via `docker-compose`
-<<<<<<< HEAD
-=======
 * Imagem publicada no Docker Hub
->>>>>>> develop
 
 ---
 
@@ -141,8 +135,6 @@ tests/
 
 ---
 
-<<<<<<< HEAD
-=======
 ## 🐳 Docker Hub
 
 Imagem disponível em:
@@ -151,7 +143,6 @@ Imagem disponível em:
 
 ---
 
->>>>>>> develop
 ## ▶️ Como executar o projeto
 
 ### 🔹 Pré-requisitos
@@ -161,13 +152,7 @@ Imagem disponível em:
 
 ---
 
-<<<<<<< HEAD
-## 🚀 Subindo a aplicação
-
-Na raiz do projeto, execute:
-=======
 ## 🚀 Subindo com Docker Compose (recomendado)
->>>>>>> develop
 
 ```bash
 docker compose up --build
@@ -175,8 +160,6 @@ docker compose up --build
 
 ---
 
-<<<<<<< HEAD
-=======
 ## ▶️ Executando com imagem pronta (Docker Hub)
 
 ```bash
@@ -187,7 +170,6 @@ docker run -d -p 5000:8080 \
 
 ---
 
->>>>>>> develop
 ## 🌐 Acessando a API
 
 Após subir os containers:
@@ -227,15 +209,9 @@ Server=db;Database=TodoDb;User=sa;Password=Senhaforte@123;TrustServerCertificate
 
 Ao subir a aplicação:
 
-<<<<<<< HEAD
-✔️ Migrations são aplicadas automaticamente
-✔️ Seed de dados é executado
-✔️ Retry evita falhas de conexão inicial
-=======
 ✔️ Migrations são aplicadas automaticamente  
 ✔️ Seed de dados é executado  
 ✔️ Retry evita falhas de conexão inicial  
->>>>>>> develop
 
 ---
 
@@ -324,10 +300,6 @@ dotnet test
 
 ---
 
-<<<<<<< HEAD
-## 📌 Melhorias futuras
-
-=======
 ## ⚠️ Observações
 
 * O SQL Server pode levar alguns segundos para iniciar no Docker
@@ -338,7 +310,6 @@ dotnet test
 
 ## 📌 Melhorias futuras
 
->>>>>>> develop
 * Paginação
 * Ordenação
 * Autenticação (JWT)
@@ -349,10 +320,4 @@ dotnet test
 
 ## 👨‍💻 Autor
 
-<<<<<<< HEAD
 Desenvolvido como parte de desafio técnico para vaga de desenvolvedor .NET.
-
----
-=======
-Desenvolvido como parte de desafio técnico para vaga de desenvolvedor .NET.
->>>>>>> develop
