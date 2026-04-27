@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TodoDesafio.Application.Interfaces;
+using TodoDesafio.Application.Mappings;
 using TodoDesafio.Application.Services;
 using TodoDesafio.Domain.Interfaces;
 using TodoDesafio.Infrastructure.Data;
@@ -10,8 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAutoMapper(typeof(TodoItemProfile));
 
 builder.Services.AddScoped<ITodoItemService, TodoItemService>();
 builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
