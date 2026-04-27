@@ -1,6 +1,8 @@
+using AutoMapper;
 using FluentAssertions;
 using Moq;
 using TodoDesafio.Application.DTOs;
+using TodoDesafio.Application.Mappings;
 using TodoDesafio.Application.Services;
 using TodoDesafio.Domain.Entities;
 using TodoDesafio.Domain.Enums;
@@ -16,7 +18,13 @@ public class TodoItemServiceTests
     public TodoItemServiceTests()
     {
         _repositoryMock = new Mock<ITodoItemRepository>();
-        _service = new TodoItemService(_repositoryMock.Object);
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<TodoItemProfile>();
+        });
+
+        var mapper = config.CreateMapper();
+        _service = new TodoItemService(_repositoryMock.Object, mapper);
     }
     
     [Fact]
