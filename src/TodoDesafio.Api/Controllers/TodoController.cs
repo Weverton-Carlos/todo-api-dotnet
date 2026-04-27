@@ -59,4 +59,11 @@ public class TodoController : ControllerBase
 
         return Ok(ApiResponse<string>.SuccessResponse("Item excluído com sucesso!"));
     }
+    
+    [ApiExplorerSettings(IgnoreApi = true)]
+    [Route("error")]
+    public IActionResult HandleError()
+    {
+        return StatusCode(500, ApiResponse<string>.ErrorResponse("Erro interno no servidor"));
+    }
 }
