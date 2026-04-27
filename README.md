@@ -62,6 +62,10 @@ Cada tarefa possui:
 
 * Testes unitários na camada de serviço
 * Uso de **Moq** para isolamento de dependências
+<<<<<<< HEAD
+=======
+* Uso de **FluentValidation** para validação desacoplada
+>>>>>>> develop
 * Validação de:
 
   * Regras de negócio
@@ -75,6 +79,10 @@ Cada tarefa possui:
 * Aplicação containerizada com **Docker**
 * Banco SQL Server em container
 * Execução simplificada via `docker-compose`
+<<<<<<< HEAD
+=======
+* Imagem publicada no Docker Hub
+>>>>>>> develop
 
 ---
 
@@ -133,6 +141,17 @@ tests/
 
 ---
 
+<<<<<<< HEAD
+=======
+## 🐳 Docker Hub
+
+Imagem disponível em:
+
+👉 https://hub.docker.com/r/seu-usuario/todo-api-desafio
+
+---
+
+>>>>>>> develop
 ## ▶️ Como executar o projeto
 
 ### 🔹 Pré-requisitos
@@ -142,9 +161,13 @@ tests/
 
 ---
 
+<<<<<<< HEAD
 ## 🚀 Subindo a aplicação
 
 Na raiz do projeto, execute:
+=======
+## 🚀 Subindo com Docker Compose (recomendado)
+>>>>>>> develop
 
 ```bash
 docker compose up --build
@@ -152,6 +175,19 @@ docker compose up --build
 
 ---
 
+<<<<<<< HEAD
+=======
+## ▶️ Executando com imagem pronta (Docker Hub)
+
+```bash
+docker run -d -p 5000:8080 \
+  -e ConnectionStrings__DefaultConnection="Server=host.docker.internal,1433;Database=TodoDb;User=sa;Password=Senhaforte@123;TrustServerCertificate=True" \
+  wevertonleal/todo-api-desafio:v1
+```
+
+---
+
+>>>>>>> develop
 ## 🌐 Acessando a API
 
 Após subir os containers:
@@ -191,9 +227,15 @@ Server=db;Database=TodoDb;User=sa;Password=Senhaforte@123;TrustServerCertificate
 
 Ao subir a aplicação:
 
+<<<<<<< HEAD
 ✔️ Migrations são aplicadas automaticamente
 ✔️ Seed de dados é executado
 ✔️ Retry evita falhas de conexão inicial
+=======
+✔️ Migrations são aplicadas automaticamente  
+✔️ Seed de dados é executado  
+✔️ Retry evita falhas de conexão inicial  
+>>>>>>> develop
 
 ---
 
@@ -282,8 +324,21 @@ dotnet test
 
 ---
 
+<<<<<<< HEAD
 ## 📌 Melhorias futuras
 
+=======
+## ⚠️ Observações
+
+* O SQL Server pode levar alguns segundos para iniciar no Docker
+* A aplicação utiliza retry automático para conexão com o banco
+* Migrations e seed são executados automaticamente na inicialização
+
+---
+
+## 📌 Melhorias futuras
+
+>>>>>>> develop
 * Paginação
 * Ordenação
 * Autenticação (JWT)
@@ -294,6 +349,10 @@ dotnet test
 
 ## 👨‍💻 Autor
 
+<<<<<<< HEAD
 Desenvolvido como parte de desafio técnico para vaga de desenvolvedor .NET.
 
 ---
+=======
+Desenvolvido como parte de desafio técnico para vaga de desenvolvedor .NET.
+>>>>>>> develop
