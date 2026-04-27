@@ -1,7 +1,10 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using TodoDesafio.Application.DTOs;
 using TodoDesafio.Application.Interfaces;
 using TodoDesafio.Application.Mappings;
 using TodoDesafio.Application.Services;
+using TodoDesafio.Application.Validators;
 using TodoDesafio.Domain.Interfaces;
 using TodoDesafio.Infrastructure.Data;
 using TodoDesafio.Infrastructure.Data.Seed;
@@ -20,6 +23,8 @@ builder.Services.AddAutoMapper(typeof(TodoItemProfile));
 
 builder.Services.AddScoped<ITodoItemService, TodoItemService>();
 builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
+builder.Services.AddScoped<IValidator<CreateTodoItemDto>, CreateTodoItemValidator>();
+builder.Services.AddScoped<IValidator<UpdateTodoItemDto>, UpdateTodoItemValidator>();
 
 // DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
