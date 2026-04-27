@@ -1,3 +1,5 @@
+using FluentValidation;
+using Microsoft.AspNetCore.Diagnostics;
 using TodoDesafio.Application.Common.Responses;
 using TodoDesafio.Application.DTOs;
 using TodoDesafio.Application.Interfaces;
@@ -64,6 +66,18 @@ public class TodoController : ControllerBase
     [Route("error")]
     public IActionResult HandleError()
     {
-        return StatusCode(500, ApiResponse<string>.ErrorResponse("Erro interno no servidor"));
+        var exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+    if (exception is ValidationException validationException)
+    {
+        var errors = validationException.Errors
+            .Select(e => e.ErrorMessage)
+            .ToList();
+
+        return BadRequest(ApiResponse<string>.ErrorResponse("Validation failed", errors));
+    }
+
+        return StatusCode(500, 
+            ApiResponse<string>.ErrorResponse("Erro interno no servidor"));
     }
 }

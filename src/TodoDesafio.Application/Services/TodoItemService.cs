@@ -1,4 +1,6 @@
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using TodoDesafio.Application.DTOs;
 using TodoDesafio.Application.Interfaces;
 using TodoDesafio.Domain.Entities;
@@ -11,13 +13,19 @@ public class TodoItemService: ITodoItemService
 {
     private readonly ITodoItemRepository _todoItemRepository;
     private readonly IMapper _mapper;
+    private readonly IValidator<CreateTodoItemDto> _createTodoItemDtoValidator;
+    private readonly IValidator<UpdateTodoItemDto> _updateTodoItemDtoValidator;
 
     public TodoItemService(
         ITodoItemRepository todoItemRepository,
-        IMapper mapper)
+        IMapper mapper,
+        IValidator<CreateTodoItemDto> createTodoItemDtoValidator,
+        IValidator<UpdateTodoItemDto> updateTodoItemDtoValidator)
     {
         _todoItemRepository = todoItemRepository;
         _mapper = mapper;
+        _createTodoItemDtoValidator = createTodoItemDtoValidator;
+        _updateTodoItemDtoValidator = updateTodoItemDtoValidator;
     }
 
     public async Task<IEnumerable<TodoItemDto>> GetAllAsync(Status? status, DateTime? dueDate)
@@ -37,6 +45,11 @@ public class TodoItemService: ITodoItemService
 
     public async Task<TodoItemDto> CreateAsync(CreateTodoItemDto itemDto)
     {
+        var validationResult = await _createTodoItemDtoValidator.ValidateAsync(itemDto);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
         var todoItem = _mapper.Map<TodoItem>(itemDto);
 
         await _todoItemRepository.AddAsync(todoItem);
@@ -47,6 +60,11 @@ public class TodoItemService: ITodoItemService
 
     public async Task<bool> UpdateAsync(int id, UpdateTodoItemDto itemDto)
     {
+        var validationResult = await _updateTodoItemDtoValidator.ValidateAsync(itemDto);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+        
         var todoItem = await _todoItemRepository.GetByIdAsync(id);
         if (todoItem == null) return false;
 

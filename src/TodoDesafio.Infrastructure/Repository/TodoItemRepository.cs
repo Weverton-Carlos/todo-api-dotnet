@@ -54,4 +54,12 @@ public class TodoItemRepository : ITodoItemRepository
         return await _context.SaveChangesAsync() > 0;
     }
     
+    public async Task<bool> ExistsByTitleAsync(string title, int? ignoreId = null)
+    {
+        return await _context.TodoItems
+            .Where(x => !x.IsDeleted && x.Title == title)
+            .Where(x => !ignoreId.HasValue || x.Id != ignoreId.Value)
+            .AnyAsync();
+    }
+    
 }

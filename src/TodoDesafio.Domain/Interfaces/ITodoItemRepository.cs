@@ -11,4 +11,5 @@ public interface ITodoItemRepository
     void Update(TodoItem todoItem);
     void Delete(TodoItem todoItem);
     Task<bool> SaveAsync();
+    Task<bool> ExistsByTitleAsync(string title, int? ignoreId = null);
 }
