@@ -50,7 +50,7 @@ public class TodoItemService: ITodoItemService
         var todoItem = await _todoItemRepository.GetByIdAsync(id);
         if (todoItem == null) return false;
 
-        todoItem = _mapper.Map<TodoItem>(itemDto);
+        _mapper.Map(itemDto, todoItem);
 
         _todoItemRepository.Update(todoItem);
         return await _todoItemRepository.SaveAsync();
