@@ -1,142 +1,276 @@
-# TodoDesafio.Api
+# 🚀 Todo API Desafio
 
-API RESTful para gerenciamento de tarefas, desenvolvida com .NET 8 e SQL Server, seguindo boas práticas de arquitetura em camadas, testes unitários e organização do domínio.
-
----
-
-## 🚀 Tecnologias utilizadas
-
-* .NET 8 (ASP.NET Core Web API)
-* Entity Framework Core
-* SQL Server
-* xUnit (testes unitários)
-* Moq (mock de dependências)
-* FluentAssertions (assertions fluentes)
+API RESTful para gerenciamento de tarefas (ToDo), desenvolvida com **.NET 8**, aplicando boas práticas de arquitetura, testes e containerização.
 
 ---
 
-## 🧱 Arquitetura do projeto
+## 📌 Sobre o projeto
 
-O projeto foi estruturado em camadas para garantir separação de responsabilidades e facilitar manutenção:
+A aplicação permite o gerenciamento de tarefas com operações completas de:
 
-```
-src/
-├── TodoDesafio.Api
-├── TodoDesafio.Application
-├── TodoDesafio.Domain
-├── TodoDesafio.Infrastructure
-teste/
-└──TodoDesafio.Tests
-```
+* Criar
+* Listar
+* Atualizar
+* Remover (soft delete)
 
----
+Cada tarefa possui:
 
-## 🧩 Decisões de arquitetura e implementação
-
-### 🔹 Organização do Entity Framework
-
-As configurações das entidades foram separadas utilizando `IEntityTypeConfiguration<T>`, mantendo o `DbContext` mais limpo e organizado.
-
-Isso facilita:
-
-* Manutenção do modelo
-* Evolução do domínio
-* Separação de responsabilidades
+* ID
+* Título
+* Descrição
+* Status (`Pending`, `InProgress`, `Completed`)
+* Data de vencimento
+* Auditoria (CreatedAt, UpdatedAt)
 
 ---
 
-### 🔹 Soft Delete e Auditoria
+## 🧠 Decisões técnicas e diferenciais
 
-Foi implementado:
+### 🗂 Organização e persistência
 
-* **Soft delete** com query filter global (`IsDeleted`)
-* **Auditoria automática de datas** no `DbContext`
+* Uso de **Entity Framework Core**
+* Configurações separadas com `IEntityTypeConfiguration`
+
+  * Mantém o `DbContext` limpo
+  * Facilita manutenção e evolução
+
+---
+
+### 🧹 Soft Delete + Auditoria
+
+* Implementado **soft delete** (`IsDeleted`)
+* Filtro global (`QueryFilter`)
+* Auditoria automática:
 
   * `CreatedAt`
   * `UpdatedAt`
 
-Isso garante rastreabilidade dos registros sem exclusão física no banco.
+---
+
+### ⚡ Performance
+
+* Índices criados para:
+
+  * `Status`
+  * `DueDate`
+
+👉 Otimizando consultas com filtros
 
 ---
 
-### 🔹 Performance e otimização
+### 🧪 Testes
 
-Foram adicionados índices no banco para otimizar consultas frequentes:
+* Testes unitários na camada de serviço
+* Uso de **Moq** para isolamento de dependências
+* Validação de:
 
-* Filtros por status
-* Filtros por data de vencimento
-
----
-
-### 🔹 Testes unitários
-
-A camada de serviço possui testes unitários com:
-
-* Moq para isolamento de dependências
-* FluentAssertions para validações mais legíveis
-* xUnit como framework de testes
-
-Isso garante validação das regras de negócio sem dependência de infraestrutura.
+  * Regras de negócio
+  * Cenários de erro
+  * Comportamento do serviço
 
 ---
 
-## ⚙️ Pré-requisitos
+### 📦 Containerização
 
-Antes de executar o projeto, certifique-se de ter instalado:
-
-* .NET SDK 8+
-* SQL Server (local ou via Docker)
+* Aplicação containerizada com **Docker**
+* Banco SQL Server em container
+* Execução simplificada via `docker-compose`
 
 ---
 
-## 🛠️ Configuração do banco de dados
+### 🔄 Resiliência e inicialização
 
-Atualize a connection string no arquivo:
+* Retry configurado no EF Core (`EnableRetryOnFailure`)
+* Execução automática de:
+
+  * Migrations
+  * Seed de dados
+
+👉 Evita falhas por timing do banco
+
+---
+
+### 📦 Padronização de resposta
+
+* Uso de `ApiResponse<T>`
+* Retorno consistente para:
+
+  * Sucesso
+  * Erros
+  * Validação
+
+---
+
+## 🏗 Arquitetura
+
+Estrutura baseada em separação de responsabilidades:
 
 ```
-src/TodoDesafio.Api/appsettings.json
+src/
+├── TodoDesafio.Api            → Controllers / Configuração
+├── TodoDesafio.Application    → Services / DTOs / Validators
+├── TodoDesafio.Domain         → Entidades / Interfaces / Regras
+└── TodoDesafio.Infrastructure → EF Core / Repositórios / Migrations
+
+tests/
+└── TodoDesafio.Tests          → Testes unitários
 ```
 
-Exemplo:
+---
+
+## 🛠 Tecnologias utilizadas
+
+* .NET 8
+* ASP.NET Core Web API
+* Entity Framework Core
+* SQL Server
+* AutoMapper
+* FluentValidation
+* xUnit
+* Moq
+* Docker / Docker Compose
+* Swagger (OpenAPI)
+
+---
+
+## ▶️ Como executar o projeto
+
+### 🔹 Pré-requisitos
+
+* Docker
+* Docker Compose
+
+---
+
+## 🚀 Subindo a aplicação
+
+Na raiz do projeto, execute:
+
+```bash
+docker compose up --build
+```
+
+---
+
+## 🌐 Acessando a API
+
+Após subir os containers:
+
+* API:
+
+```
+http://localhost:5000
+```
+
+* Swagger:
+
+```
+http://localhost:5000/swagger
+```
+
+---
+
+## 🗄 Banco de dados
+
+* SQL Server rodando em container
+* Porta:
+
+```
+1433
+```
+
+* Connection String (interna do container):
+
+```
+Server=db;Database=TodoDb;User=sa;Password=Senhaforte@123;TrustServerCertificate=True
+```
+
+---
+
+## 🔄 Inicialização automática
+
+Ao subir a aplicação:
+
+✔️ Migrations são aplicadas automaticamente
+✔️ Seed de dados é executado
+✔️ Retry evita falhas de conexão inicial
+
+---
+
+## 📬 Exemplos de uso
+
+### 🔹 Criar tarefa
+
+```http
+POST /api/todo
+```
 
 ```json
 {
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost,1433;Database=TodoDb;User Id=sa;Password=YourStrong!Pass123;TrustServerCertificate=True;"
-  }
+  "title": "Estudar .NET",
+  "description": "Revisar API",
+  "status": 1,
+  "dueDate": "2026-12-31"
 }
 ```
 
 ---
 
-## ▶️ Como executar a aplicação
+### 🔹 Listar tarefas com filtro
 
-### 1. Restaurar dependências
-
-```bash
-dotnet restore
+```http
+GET /api/todo?status=1&dueDate=2026-12-31
 ```
 
-### 2. Executar migrations
+---
 
-```bash
-dotnet ef database update \
---project src/TodoDesafio.Infrastructure \
---startup-project src/TodoDesafio.Api
+### 🔹 Atualizar tarefa
+
+```http
+PUT /api/todo/1
 ```
 
-### 3. Rodar a API
+---
 
-```bash
-dotnet run --project src/TodoDesafio.Api
+### 🔹 Remover tarefa (soft delete)
+
+```http
+DELETE /api/todo/1
 ```
 
-### 4. Acessar a aplicação
+---
 
-Swagger:
+## ✅ Regras de negócio implementadas
 
-* [http://localhost:5000/swagger](http://localhost:5000/swagger)
-* [https://localhost:5001/swagger](https://localhost:5001/swagger)
+### 📌 Título
+
+* Obrigatório
+* Máx: 150 caracteres
+* Não duplicado (considerando soft delete)
+
+---
+
+### 📌 Descrição
+
+* Obrigatória
+* Máx: 500 caracteres
+
+---
+
+### 📌 Data de vencimento
+
+* Data válida
+* Pode ser no passado (backlog)
+
+---
+
+### 📌 Status
+
+* Valores permitidos:
+
+  * 1 → Pending
+  * 2 → InProgress
+  * 3 → Completed
 
 ---
 
@@ -148,26 +282,18 @@ dotnet test
 
 ---
 
-## 📌 Funcionalidades
+## 📌 Melhorias futuras
 
-* CRUD de tarefas
-* Soft delete (exclusão lógica)
-* Auditoria de criação e atualização
-* Filtros otimizados com índices
-* Validação de regras de negócio via testes unitários
-
----
-
-## 📈 Melhorias futuras
-
-* Autenticação JWT
-* Versionamento de API
-* Paginação e ordenação avançada
-* Logging estruturado
-* Dockerização da aplicação
+* Paginação
+* Ordenação
+* Autenticação (JWT)
+* Logs estruturados
+* Testes de integração
 
 ---
 
 ## 👨‍💻 Autor
 
-Projeto desenvolvido como desafio técnico, focado em boas práticas de arquitetura, organização de código e testes automatizados.
+Desenvolvido como parte de desafio técnico para vaga de desenvolvedor .NET.
+
+---
