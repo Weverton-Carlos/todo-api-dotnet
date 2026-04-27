@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TodoDesafio.Domain.Entities;
 using TodoDesafio.Domain.Enums;
 
@@ -7,7 +8,10 @@ public static class DbInitializer
 {
     public static async Task SeedAsync(AppDbContext context)
     {
-        if (context.TodoItems.Any())
+        if (!await context.Database.CanConnectAsync())
+            return;
+
+        if (await context.TodoItems.AnyAsync())
             return;
 
         var todos = new List<TodoItem>
