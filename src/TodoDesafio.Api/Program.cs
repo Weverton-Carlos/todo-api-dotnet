@@ -23,24 +23,42 @@ builder.Services.AddScoped<ITodoItemRepository, TodoItemRepository>();
 
 // DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions =>
+{
+    sqlOptions.EnableRetryOnFailure(
+        maxRetryCount: 5,
+        maxRetryDelay: TimeSpan.FromSeconds(10),
+        errorNumbersToAdd: null);
+}));
 
 var app = builder.Build();
 
 // Seed
 using (var scope = app.Services.CreateScope())
 {
-    var conn = builder.Configuration.GetConnectionString("DefaultConnection");
-    Console.WriteLine($"Connection: {conn}");
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await DbInitializer.SeedAsync(db);
+
+    var retries = 5;
+
+    while (retries > 0)
+    {
+        try
+        {
+            await db.Database.MigrateAsync();
+            await DbInitializer.SeedAsync(db);
+            break;
+        }
+        catch
+        {
+            retries--;
+            Console.WriteLine("Tentando conectar ao banco...");
+            await Task.Delay(5000);
+        }
+    }
 }
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
