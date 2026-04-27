@@ -6,6 +6,7 @@ using TodoDesafio.Application.Mappings;
 using TodoDesafio.Application.Services;
 using TodoDesafio.Domain.Entities;
 using TodoDesafio.Domain.Enums;
+using TodoDesafio.Domain.Extensions;
 using TodoDesafio.Domain.Interfaces;
 
 namespace TodoDesafio.Tests.Services;
@@ -35,7 +36,7 @@ public class TodoItemServiceTests
         {
             Title = "Test",
             Description = "Desc",
-            Status = Status.Pending,
+            Status = Status.Pending.GetDescription(),
             DueDate = DateTime.UtcNow
         };
 
@@ -111,7 +112,7 @@ public class TodoItemServiceTests
         var dto = new UpdateTodoItemDto
         {
             Title = "Updated",
-            Status = Status.Completed,
+            Status = Status.Completed.GetDescription(),
             DueDate = DateTime.UtcNow
         };
 
