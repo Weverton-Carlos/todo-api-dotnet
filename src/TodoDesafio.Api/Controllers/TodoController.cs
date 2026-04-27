@@ -68,14 +68,14 @@ public class TodoController : ControllerBase
     {
         var exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
 
-    if (exception is ValidationException validationException)
-    {
-        var errors = validationException.Errors
-            .Select(e => e.ErrorMessage)
-            .ToList();
+        if (exception is ValidationException validationException)
+        {
+            var errors = validationException.Errors
+                .Select(e => e.ErrorMessage)
+                .ToList();
 
-        return BadRequest(ApiResponse<string>.ErrorResponse("Validation failed", errors));
-    }
+            return BadRequest(ApiResponse<string>.ErrorResponse("Validation failed", errors));
+        }
 
         return StatusCode(500, 
             ApiResponse<string>.ErrorResponse("Erro interno no servidor"));

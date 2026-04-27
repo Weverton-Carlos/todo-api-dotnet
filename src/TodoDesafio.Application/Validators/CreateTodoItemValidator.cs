@@ -1,5 +1,6 @@
 using FluentValidation;
 using TodoDesafio.Application.DTOs;
+using TodoDesafio.Domain.Enums;
 using TodoDesafio.Domain.Interfaces;
 
 namespace TodoDesafio.Application.Validators;
@@ -23,10 +24,18 @@ public class CreateTodoItemValidator : AbstractValidator<CreateTodoItemDto>
 
         RuleFor(x => x.DueDate)
             .NotEmpty().WithMessage("Due date is required");
-        // 👇 NÃO validar se é passado (regra permite)
-
+        
         RuleFor(x => x.Status)
-            .IsInEnum().WithMessage("Invalid status value");
+            .Must(status =>
+            {
+                if (int.TryParse(status, out var value))
+                {
+                    return Enum.IsDefined(typeof(Status), value);
+                }
+                return false;
+            })
+            .WithMessage("Invalid status value");
+        
     }
 
     private async Task<bool> BeUniqueTitle(string title, CancellationToken cancellationToken)
